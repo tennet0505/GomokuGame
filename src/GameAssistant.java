@@ -1,6 +1,6 @@
-import helpers.PlayerNumber;
+import helpers.Constants;
+import helpers.Enums.PlayerNumber;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GameAssistant {
@@ -12,18 +12,13 @@ public class GameAssistant {
     public GameAssistant(Board boardMain) {
         board = boardMain;
     }
-    public void startGame() {
+    public void gameTitle() {
         System.out.println("-------------------------------------------------------");
         System.out.println("                     Start game!");
         System.out.println("-------------------------------------------------------");
     }
-    public void gameRule() {
-        System.out.println("-------------------------------------------------------");
-        System.out.println("                     Game rule description");
-        System.out.println("-------------------------------------------------------");
-    }
 
-    public void setupPlayerName(Player player) {
+    public void setupName(Player player) {
         String playerNumber = player.playerNumber == PlayerNumber.One ? "Player 1" : "Player 2";
         System.out.print(playerNumber + " enter your name: ");
         String name = scanner.nextLine();
@@ -32,7 +27,7 @@ public class GameAssistant {
         System.out.println();
     }
 
-    public void firstStep(Player player) {
+    public void gameStart(Player player) {
         System.out.println();
         System.out.printf("Let's start, %s. You are the first!", player.playerName);
     }
@@ -40,28 +35,32 @@ public class GameAssistant {
     public void checkSteps(Player player1, Player player2) {
         if (isFirstPlayerTurn) {
             isFirstPlayerTurn = false;
-            step(player1);
+            makeStep(player1);
         } else {
             isFirstPlayerTurn = true;
-            step(player2);
+            makeStep(player2);
         }
-        checkSteps(player1, player2);
-    }
-    private void step(Player player) {
-        System.out.println();
-        System.out.print(player.playerName + " choose X coordinate: ");
-        int x = scanner.nextInt();
-        System.out.print("Choose Y coordinate: ");
-        int y = scanner.nextInt();
-        if (isValidCoordiante(x,y)) {
-            board.setupStepInMatrix(player, x, y);
-        } else {
-            System.out.print("This coordinate is choose or out of bounds. Please choose another coordinate.");
-            step(player);
+        if (gameIsFinished()) {
+            checkSteps(player1, player2);
         }
     }
 
-    public Boolean isGameFinished() {
+    //Private functions:
+    private void makeStep(Player player) {
+        System.out.println();
+        System.out.print("-=[ " + player.playerName +  " ]=-" + " choose X coordinate: ");
+        int x = scanner.nextInt();
+        System.out.print("Choose Y coordinate: ");
+        int y = scanner.nextInt();
+        if (isValidLocation(x,y)) {
+            board.setupStepOnBoard(player, x, y);
+        } else {
+            System.out.print(Constants.errorOutOfBoardBoundsLocation);
+            makeStep(player);
+        }
+    }
+
+    private Boolean gameIsFinished() {
         if (!isGameFinished) {
             return true;
         } else {
@@ -69,13 +68,21 @@ public class GameAssistant {
             return false;
         }
     }
-    public ArrayList<String> fetchSteps(Player player) {
-        return board.fetchSteps(player);
+
+    private Boolean isValidLocation(int x, int y) {
+        return (x >= 0 && x < board.xSize) && (y >= 0 && y < board.ySize)
+                && !isOutOfBounds(x,y)
+                && !isCellOccupated(x,y);
     }
 
-    private Boolean isValidCoordiante(int x, int y) {
-        return (!board.passedStepsPlayerOne.contains("(" + x + "," + y + ")")) &&
-                (!board.passedStepsPlayerTwo.contains("(" + x + "," + y + ")")) &&
-                (x >= 0 && x < board.xSize) && (y >= 0 && y < board.ySize);
+    private Boolean isCellOccupated(int x, int y) {
+        return board.gameBoard[x][y] != 0;
+    }
+    private Boolean isOutOfBounds(int x, int y) {
+        try {
+            return board.gameBoard[x][y] != 0;
+        } catch(Error e) {
+            return true;
+        }
     }
 }

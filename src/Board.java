@@ -1,60 +1,68 @@
-import helpers.PlayerNumber;
-
-import java.util.ArrayList;
+import helpers.Constants;
+import helpers.Enums.PlayerNumber;
+import helpers.Print;
 
 public class Board {
     public int xSize;
     public int ySize;
-    private final String[][] fieldMatrix;
-    final ArrayList<String> passedStepsPlayerOne = new ArrayList<>();
-    final ArrayList<String> passedStepsPlayerTwo = new ArrayList<>();
+    public final int[][] gameBoard;
+    private final String[][] exampleBoard;
 
     int[][] directions = {{-1,0}, {1,0}, {0,1}, {0,-1}}; //without diagonals
-    public Board(int fieldXSize, int fieldYSize) {
-        xSize = fieldXSize;
-        ySize = fieldYSize;
-        fieldMatrix = filledDefaultMatrix(fieldXSize, fieldYSize);
+    public Board(int boardXSize, int boardYSize) {
+        xSize = boardXSize;
+        ySize = boardYSize;
+        exampleBoard = filledExampleBoard(boardXSize, boardYSize);
+        gameBoard = filledGameBoard(boardXSize, boardYSize);
     }
 
-    public void mainMatrix() {
+    public void exampleBoard() {
         for (int x = 0; x < xSize; x++) {
             System.out.print("            ");
             for (int y = 0; y < ySize; y++) {
-                System.out.print(fieldMatrix[x][y] + " ");
+                System.out.print(exampleBoard[x][y] + " ");
             }
             System.out.println();
         }
     }
 
-    public void setupStepInMatrix(Player player, int x, int y) {
+    public void gameBoard() {
+        for (int x = 0; x < xSize; x++) {
+            System.out.print("            ");
+            for (int y = 0; y < ySize; y++) {
+                System.out.print(gameBoard[x][y] + "  ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void setupStepOnBoard(Player player, int x, int y) {
         System.out.println();
         switch (player.playerNumber) {
             case PlayerNumber.One ->  {
-                fieldMatrix[x][y] = "  \uD83D\uDD34 ";
-                passedStepsPlayerOne.add("("+x+","+y+")");
+                insertStepToBoard(x,y,1);
             }
 
             case PlayerNumber.Two ->  {
-                fieldMatrix[x][y] = "  \uD83D\uDD35 ";
-                passedStepsPlayerTwo.add("("+x+","+y+")");
+                insertStepToBoard(x,y,2);
             }
         }
-        mainMatrix();
+        gameBoard();
     }
 
-    public ArrayList<String> fetchSteps(Player player) {
-        switch (player.playerNumber) {
-            case PlayerNumber.One -> {
-                return passedStepsPlayerOne;
-            }
-            case PlayerNumber.Two -> {
-                return passedStepsPlayerTwo;
-            }
+
+
+
+    // Private functions:
+    private void insertStepToBoard(int x, int y, int playerNumber) {
+        if (gameBoard[x][y] == 0) {
+            gameBoard[x][y] = playerNumber;
+        } else {
+            Print.ln(Constants.errorWrongLocation);
         }
-        return null;
     }
 
-    private String[][] filledDefaultMatrix(int fieldXSize, int fieldYSize) {
+    private String[][] filledExampleBoard(int fieldXSize, int fieldYSize) {
         String[][] arrayUpdated = new String[fieldXSize][fieldYSize];
         for (int x = 0; x < fieldXSize; x++) {
             for (int y = 0; y < fieldYSize; y++) {
@@ -63,7 +71,41 @@ public class Board {
         }
         return arrayUpdated;
     }
+    private int[][] filledGameBoard(int fieldXSize, int fieldYSize) {
+        int[][] arrayUpdated = new int[fieldXSize][fieldYSize];
+        for (int x = 0; x < fieldXSize; x++) {
+            for (int y = 0; y < fieldYSize; y++) {
+                arrayUpdated[x][y] = 0;
+            }
+        }
+        return arrayUpdated;
+    }
 }
+
+// use Array not ArrayList
+// change board to int[][]
+// use int 1 and int 2 instead String "(1,2)"
+// rename coordinate to location
+
+
+
+//    int[][] arr;
+//        arr = new int[10][10];
+//                for (int i = 0; i < 10; i++) {
+//        for (int j = 0; j < 10; j++) {
+//        arr[i][j] = 0;
+//        }
+//        }
+//
+//        for (int i = 0; i < 10; i++) {
+//        for (int j = 0; j < 10; j++) {
+//        System.out.print(arr[i][j]);
+//        }
+//        System.out.println();
+//        }
+
+
+
 
 // check boards's edges
 // if x > 0 and x < sizeX return true

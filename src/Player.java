@@ -1,4 +1,4 @@
-import helpers.PlayerNumber;
+import helpers.Enums.PlayerNumber;
 
 public class Player {
     public String playerName;
