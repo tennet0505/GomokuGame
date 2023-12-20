@@ -1,5 +1,6 @@
 import helpers.Constants;
 import helpers.Enums.PlayerNumber;
+import helpers.ErrorMessage;
 
 import java.util.Scanner;
 
@@ -48,14 +49,14 @@ public class GameAssistant {
     //Private functions:
     private void makeStep(Player player) {
         System.out.println();
-        System.out.print("-=[ " + player.playerName +  " ]=-" + " choose X coordinate: ");
+        System.out.print("\uD83E\uDD14 -=[ " + player.playerName +  " ]=-" + " choose X coordinate: ");
         int x = scanner.nextInt();
         System.out.print("Choose Y coordinate: ");
         int y = scanner.nextInt();
         if (isValidLocation(x,y)) {
             board.setupStepOnBoard(player, x, y);
         } else {
-            System.out.print(Constants.errorOutOfBoardBoundsLocation);
+            System.out.print(ErrorMessage.errorOutOfBoardBoundsLocation);
             makeStep(player);
         }
     }

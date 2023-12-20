@@ -1,5 +1,6 @@
 import helpers.Constants;
 import helpers.Enums.PlayerNumber;
+import helpers.ErrorMessage;
 import helpers.Print;
 
 public class Board {
@@ -58,7 +59,7 @@ public class Board {
         if (gameBoard[x][y] == 0) {
             gameBoard[x][y] = playerNumber;
         } else {
-            Print.ln(Constants.errorWrongLocation);
+            Print.ln(ErrorMessage.errorWrongLocation);
         }
     }
 
@@ -81,28 +82,6 @@ public class Board {
         return arrayUpdated;
     }
 }
-
-// use Array not ArrayList
-// change board to int[][]
-// use int 1 and int 2 instead String "(1,2)"
-// rename coordinate to location
-
-
-
-//    int[][] arr;
-//        arr = new int[10][10];
-//                for (int i = 0; i < 10; i++) {
-//        for (int j = 0; j < 10; j++) {
-//        arr[i][j] = 0;
-//        }
-//        }
-//
-//        for (int i = 0; i < 10; i++) {
-//        for (int j = 0; j < 10; j++) {
-//        System.out.print(arr[i][j]);
-//        }
-//        System.out.println();
-//        }
 
 
 
