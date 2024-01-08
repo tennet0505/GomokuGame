@@ -1,4 +1,5 @@
 import helpers.Constants;
+import helpers.Enums.Directions;
 import helpers.Enums.PlayerNumber;
 import helpers.ErrorMessage;
 
@@ -55,6 +56,7 @@ public class GameAssistant {
         int y = scanner.nextInt();
         if (isValidLocation(x,y)) {
             board.setupStepOnBoard(player, x, y);
+            isGameFinished = board.checkIfIsWinStepFor(player, x, y);
         } else {
             System.out.print(ErrorMessage.errorOutOfBoardBoundsLocation);
             makeStep(player);
@@ -72,18 +74,18 @@ public class GameAssistant {
 
     private Boolean isValidLocation(int x, int y) {
         return (x >= 0 && x < board.xSize) && (y >= 0 && y < board.ySize)
-                && !isOutOfBounds(x,y)
-                && !isCellOccupated(x,y);
+//                && !isOutOfBounds(x,y)
+                && !isCellOccupied(x,y);
     }
 
-    private Boolean isCellOccupated(int x, int y) {
+    private Boolean isCellOccupied(int x, int y) {
         return board.gameBoard[x][y] != 0;
     }
-    private Boolean isOutOfBounds(int x, int y) {
-        try {
-            return board.gameBoard[x][y] != 0;
-        } catch(Error e) {
-            return true;
-        }
-    }
+//    private Boolean isOutOfBounds(int x, int y) {
+//        try {
+//            return board.gameBoard[x][y] != 0;
+//        } catch(Error e) {
+//            return true;
+//        }
+//    }
 }
