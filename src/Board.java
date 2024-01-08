@@ -20,7 +20,7 @@ public class Board {
         gameBoard = filledGameBoard(boardXSize, boardYSize);
     }
 
-    public void exampleBoard() {
+    public void setExampleBoard() {
         for (int x = 0; x < xSize; x++) {
             System.out.print("            ");
             for (int y = 0; y < ySize; y++) {
@@ -28,6 +28,7 @@ public class Board {
             }
             System.out.println();
         }
+        Print.ln("-------------------------------------------------------");
     }
 
     public void gameBoard() {
@@ -47,10 +48,10 @@ public class Board {
 
     }
     public boolean checkIfIsWinStepFor(Player player, int x, int y) {
-        boolean isWin = (checkWinWithDirection(player, x, y, Directions.HORIZONTAL) ||
-                checkWinWithDirection(player, x, y, Directions.VERTICAL) ||
-                checkWinWithDirection(player, x, y, Directions.DiagonalTRtoBL) ||
-                checkWinWithDirection(player, x, y, Directions.DiagonalTLtoBR));
+        boolean isWin = (checkDirectionForWin(player, x, y, Directions.HORIZONTAL) ||
+                checkDirectionForWin(player, x, y, Directions.VERTICAL) ||
+                checkDirectionForWin(player, x, y, Directions.DiagonalTRtoBL) ||
+                checkDirectionForWin(player, x, y, Directions.DiagonalTLtoBR));
         if (isWin) {
             System.out.println("Congrats! " + player.playerName + ", you are a WINNER!!!");
             return true;
@@ -58,15 +59,11 @@ public class Board {
         return false;
     }
 
-    public boolean checkWinWithDirection(Player player, int x, int y, Directions direction) {
-        System.out.println("direction: " + direction);
+    public boolean checkDirectionForWin(Player player, int x, int y, Directions direction) {
         int countWinCell = 0;
         for (int i = -4; i <= 4; i++) {
             int new_row = x + i * direction.getDirectionX();
             int new_column = y + i * direction.getDirectionY();
-
-            System.out.println("new_row: " + new_row);
-            System.out.println("new_column: " + new_column);
 
             if (isValidCell(new_row, new_column) && gameBoard[new_row][new_column] == player.playerNumber.value) {
                 countWinCell++;
@@ -81,7 +78,6 @@ public class Board {
     }
 
     public boolean isValidCell(int x, int y) {
-        System.out.println((x >= 0 && x < xSize) && (y >= 0 && y < ySize));
         return (x >= 0 && x < xSize) && (y >= 0 && y < ySize);
     }
 
@@ -137,6 +133,7 @@ public class Board {
         }
         return isWin;
     }
+
 
 
     // Private functions:

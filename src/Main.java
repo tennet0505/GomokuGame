@@ -6,20 +6,19 @@ import helpers.Print;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     static Board board = new Board(Constants.boardX,Constants.boardY);
-    static GameAssistant assistant = new GameAssistant(board);
+    static GameAssistant gameAssistant = new GameAssistant(board);
     static Player player1 = new Player("", PlayerNumber.One);
     static Player player2 = new Player("", PlayerNumber.Two);
 
     public static void main(String[] args) {
 
-        assistant.gameTitle();
-        board.exampleBoard();                                // show default board
-        Print.ln("-------------------------------------------------------");
-        assistant.setupName(player1);
-        assistant.setupName(player2);
+        gameAssistant.setGameTitle();
+        gameAssistant.setExampleBoard();               // show default board
+        gameAssistant.setupNameFor(player1);
+        gameAssistant.setupNameFor(player2);
 
-        assistant.gameStart(player1);
-        assistant.checkSteps(player1, player2);
+        gameAssistant.startGame(player1);
+        gameAssistant.checkStepsTurnPlayers(player1, player2);
 
 
 

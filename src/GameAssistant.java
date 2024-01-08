@@ -14,13 +14,17 @@ public class GameAssistant {
     public GameAssistant(Board boardMain) {
         board = boardMain;
     }
-    public void gameTitle() {
+    public void setGameTitle() {
         System.out.println("-------------------------------------------------------");
         System.out.println("                     Start game!");
         System.out.println("-------------------------------------------------------");
     }
 
-    public void setupName(Player player) {
+    public void setExampleBoard() {
+       board.setExampleBoard();
+    }
+
+    public void setupNameFor(Player player) {
         String playerNumber = player.playerNumber == PlayerNumber.One ? "Player 1" : "Player 2";
         System.out.print(playerNumber + " enter your name: ");
         String name = scanner.nextLine();
@@ -29,12 +33,12 @@ public class GameAssistant {
         System.out.println();
     }
 
-    public void gameStart(Player player) {
+    public void startGame(Player player) {
         System.out.println();
         System.out.printf("Let's start, %s. You are the first!", player.playerName);
     }
 
-    public void checkSteps(Player player1, Player player2) {
+    public void checkStepsTurnPlayers(Player player1, Player player2) {
         if (isFirstPlayerTurn) {
             isFirstPlayerTurn = false;
             makeStep(player1);
@@ -43,7 +47,7 @@ public class GameAssistant {
             makeStep(player2);
         }
         if (gameIsFinished()) {
-            checkSteps(player1, player2);
+            checkStepsTurnPlayers(player1, player2);
         }
     }
 
@@ -58,7 +62,7 @@ public class GameAssistant {
             board.setupStepOnBoard(player, x, y);
             isGameFinished = board.checkIfIsWinStepFor(player, x, y);
         } else {
-            System.out.print(ErrorMessage.errorOutOfBoardBoundsLocation);
+            System.out.print(ErrorMessage.errorWrongLocation);
             makeStep(player);
         }
     }
@@ -74,18 +78,18 @@ public class GameAssistant {
 
     private Boolean isValidLocation(int x, int y) {
         return (x >= 0 && x < board.xSize) && (y >= 0 && y < board.ySize)
-//                && !isOutOfBounds(x,y)
+                && !isOutOfBounds(x,y)
                 && !isCellOccupied(x,y);
     }
 
     private Boolean isCellOccupied(int x, int y) {
         return board.gameBoard[x][y] != 0;
     }
-//    private Boolean isOutOfBounds(int x, int y) {
-//        try {
-//            return board.gameBoard[x][y] != 0;
-//        } catch(Error e) {
-//            return true;
-//        }
-//    }
+    private Boolean isOutOfBounds(int x, int y) {
+        try {
+            return board.gameBoard[x][y] != 0;
+        } catch(Error e) {
+            return true;
+        }
+    }
 }
