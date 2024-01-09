@@ -26,14 +26,14 @@ public class GameAssistant {
     }
 
     public void setBoardSize() {
-        System.out.println("Default size of board is 10X10");
-        System.out.println("You can set board's size. Do you wan set set board's size? Yes/No");
+        System.out.println(ConstantStrings.defaultBordSize);
+        System.out.println(ConstantStrings.setBordSize);
         String isSetBoard = scanner.nextLine();
         System.out.println();
-        if (Objects.equals(isSetBoard, "Yes")) {
-            System.out.print("Enter X size: ");
+        if (Objects.equals(isSetBoard, ConstantStrings.yes)) {
+            System.out.print(ConstantStrings.enterXsize);
             String xSize = scanner.nextLine();
-            System.out.print("Enter Y size: ");
+            System.out.print(ConstantStrings.enterYsize);
             String ySize = scanner.nextLine();
             int newXSize = Integer.parseInt(xSize);
             int newYSize = Integer.parseInt(ySize);
