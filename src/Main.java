@@ -14,6 +14,7 @@ public class Main {
         gameAssistant.setGameTitle();
         gameAssistant.setExampleBoard();
         gameAssistant.setBoardSize();
+        gameType = gameAssistant.chooseGameType();
         gameAssistant.setupNameFor(player1);
         switch (gameType) {
             case GameType.HumanVsHuman:

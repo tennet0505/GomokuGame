@@ -18,5 +18,9 @@ public class ConstantStrings {
     public static String yes = "Yes";
     public static String enterXsize = "Enter Board X size: ";
     public static String enterYsize = "Enter Board Y size: ";
-
+    public static String chooseGameType = "Choose game type: ";
+    public static String gameTypeHumanVsHuman = "- Human VS Human:  1";
+    public static String gameTypeHumanVsDumbAI = "- Human VS DumbAI: 2";
+    public static String gameHumanVsHuman = "Good. Game  \uD83D\uDE4E VS \uD83D\uDE4E";
+    public static String gameHumanVsDumbAI = "Good. Game \uD83D\uDE4E VS \uD83E\uDDBE!";
 }

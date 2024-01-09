@@ -28,6 +28,21 @@ public class GameAssistant {
        board.setExampleBoard();
     }
 
+    public GameType chooseGameType(){
+        System.out.println(ConstantStrings.chooseGameType);
+        System.out.println(ConstantStrings.gameTypeHumanVsHuman);
+        System.out.println(ConstantStrings.gameTypeHumanVsDumbAI);
+        String gameType = scanner.nextLine();
+        int gameTypeID = Integer.parseInt(gameType);
+        if (gameTypeID == 1) {
+            System.out.println(ConstantStrings.gameHumanVsHuman);
+            return GameType.HumanVsHuman;
+        } else {
+            System.out.println(ConstantStrings.gameHumanVsDumbAI);
+            return GameType.HumanVsDumbAI;
+        }
+    }
+
     public void setBoardSize() {
         System.out.println(ConstantStrings.defaultBordSize);
         System.out.println(ConstantStrings.setBordSize);
@@ -89,7 +104,7 @@ public class GameAssistant {
                 int randX = rand.nextInt(board.xSize);
                 int randY = rand.nextInt(board.ySize);
                 BoardCell randomCell = new BoardCell(randX, randY);
-                System.out.print("/_-=(*_~)=-_/ I choose: " + "X: " + randomCell.X + ", " + "Y: " + randomCell.Y);
+                System.out.print("\uD83E\uDDBE-=(*_~)=-_/ I choose: " + "X: " + randomCell.X + ", " + "Y: " + randomCell.Y);
                 cell.X = randomCell.X;
                 cell.Y = randomCell.Y;
                 break;
