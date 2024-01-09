@@ -1,7 +1,7 @@
 import helpers.ConstantStrings;
 import helpers.Enums.BorderCellMark;
 import helpers.Enums.Directions;
-import helpers.Enums.PlayerNumber;
+import helpers.Enums.PlayerType;
 import helpers.ErrorMessage;
 import helpers.Print;
 import helpers.StringHelper;
@@ -63,6 +63,7 @@ public class Board {
             case 0 -> BorderCellMark.Empty.mark;
             case 1 -> BorderCellMark.PlayerOne.mark;
             case 2 -> BorderCellMark.PlayerTwo.mark;
+            case 3 -> BorderCellMark.PlayerTwo.mark;
             default -> "";
         };
     }
@@ -92,7 +93,7 @@ public class Board {
             int new_column = cell.Y + i * direction.getDirectionY();
 
             BoardCell new_cell = new BoardCell(new_row, new_column);
-            if (isValidCell(new_cell) && gameBoard[new_row][new_column] == player.playerNumber.value) {
+            if (isValidCell(new_cell) && gameBoard[new_row][new_column] == player.playerType.value) {
                 countWinCell++;
                 if (countWinCell == 5) {
                     return true;
@@ -111,8 +112,8 @@ public class Board {
     // Private functions:
     private void insertStepToBoard(BoardCell cell, Player player) {
         if (gameBoard[cell.X][cell.Y] == 0) {
-            gameBoard[cell.X][cell.Y] = player.playerNumber.value;
-            if (player.playerNumber == PlayerNumber.One) {
+            gameBoard[cell.X][cell.Y] = player.playerType.value;
+            if (player.playerType == PlayerType.HumanOne) {
                 playerOneSteps.add(cell);
             } else {
                 playerTwoSteps.add(cell);

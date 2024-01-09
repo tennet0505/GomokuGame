@@ -1,31 +1,28 @@
 import helpers.Constants;
-import helpers.Enums.PlayerNumber;
+import helpers.Enums.GameType;
+import helpers.Enums.PlayerType;
 public class Main {
     static Board board = new Board(Constants.boardX,Constants.boardY);
     static GameAssistant gameAssistant = new GameAssistant(board);
-    static Player player1 = new Player("", PlayerNumber.One);
-    static Player player2 = new Player("", PlayerNumber.Two);
+    static Player player1 = new Player("", PlayerType.HumanOne);
+    static Player player2 = new Player("", PlayerType.HumanTwo);
+    static GameType gameType = GameType.HumanVsDumbAI;
 
     public static void main(String[] args) {
 
+        gameAssistant.gameType = gameType;
         gameAssistant.setGameTitle();
         gameAssistant.setExampleBoard();
         gameAssistant.setBoardSize();
         gameAssistant.setupNameFor(player1);
-        gameAssistant.setupNameFor(player2);
+        switch (gameType) {
+            case GameType.HumanVsHuman:
+                gameAssistant.setupNameFor(player2);
+                break;
+            case GameType.HumanVsDumbAI:
+                player2 = new Player("My name is AI", PlayerType.AI);
+        }
         gameAssistant.startGame(player1);
         gameAssistant.checkStepsTurnPlayers(player1, player2);
-
-
-
-
-
-//        board.mainMatrix();                    // show default board
-//        Print.ln(player1.playerName);          // show player name
-//        assistant.step(player1);     // make a new step for player with x and y
-//        ArrayList<String> storedArray = assistant.fetchSteps(player1); // show all player's steps
-//        for (String i : storedArray) {
-//            System.out.println(i);
-//        }
     }
 }

@@ -1,9 +1,11 @@
 import helpers.ConstantStrings;
-import helpers.Enums.PlayerNumber;
+import helpers.Enums.GameType;
+import helpers.Enums.PlayerType;
 import helpers.ErrorMessage;
 import models.BoardCell;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 
 public class GameAssistant {
@@ -11,6 +13,7 @@ public class GameAssistant {
     Board board;
     Boolean isFirstPlayerTurn = true;
     Boolean isGameFinished = false;
+    GameType gameType = GameType.HumanVsHuman;
 
     public GameAssistant(Board boardMain) {
         board = boardMain;
@@ -42,7 +45,7 @@ public class GameAssistant {
     }
 
     public void setupNameFor(Player player) {
-        String playerNumber = player.playerNumber == PlayerNumber.One ? ConstantStrings.playerOne : ConstantStrings.playerTwo;
+        String playerNumber = player.playerType== PlayerType.HumanOne ? ConstantStrings.playerOne : ConstantStrings.playerTwo;
         System.out.print(playerNumber + ConstantStrings.enterName);
         String name = scanner.nextLine();
         player.playerName = name;
@@ -70,13 +73,27 @@ public class GameAssistant {
 
     //Private functions:
     private void makeStep(Player player) {
+        BoardCell cell = new BoardCell(0, 0);
         System.out.println();
-        System.out.print("\uD83E\uDD14 -=[ " + player.playerName +  " ]=-" + ConstantStrings.chooseXCoordinate);
-        int x = scanner.nextInt();
-        System.out.print(ConstantStrings.chooseYCoordinate);
-        int y = scanner.nextInt();
-
-        BoardCell cell = new BoardCell(x, y);
+        switch (player.playerType) {
+            case PlayerType.HumanOne, PlayerType.HumanTwo:
+                System.out.print("\uD83E\uDD14 -=[ " + player.playerName +  " ]=-" + ConstantStrings.chooseXCoordinate);
+                int x = scanner.nextInt();
+                System.out.print(ConstantStrings.chooseYCoordinate);
+                int y = scanner.nextInt();
+                cell.X = x;
+                cell.Y = y;
+                break;
+            case PlayerType.AI:
+                Random rand = new Random();
+                int randX = rand.nextInt(board.xSize);
+                int randY = rand.nextInt(board.ySize);
+                BoardCell randomCell = new BoardCell(randX, randY);
+                System.out.print("/_-=(*_~)=-_/ I choose: " + "X: " + randomCell.X + ", " + "Y: " + randomCell.Y);
+                cell.X = randomCell.X;
+                cell.Y = randomCell.Y;
+                break;
+        }
         if (isValidLocation(cell)) {
             board.setupStepOnBoard(player, cell);
             isGameFinished = board.checkIfIsWinStepFor(player, cell);

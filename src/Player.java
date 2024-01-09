@@ -1,11 +1,11 @@
-import helpers.Enums.PlayerNumber;
+import helpers.Enums.PlayerType;
 
 public class Player {
     public String playerName;
-    public PlayerNumber playerNumber;
+    public PlayerType playerType;
 
-    public Player(String name, PlayerNumber playernumber) {
-        playerNumber = playernumber;
+    public Player(String name, PlayerType playertype) {
+        playerType = playertype;
         playerName = name;
     }
 }
