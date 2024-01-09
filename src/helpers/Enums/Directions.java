@@ -6,8 +6,8 @@ public enum Directions {
     DiagonalTLtoBR(1, 1),   //diagonal \
     DiagonalTRtoBL(-1, -1); //diagonal /
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     Directions(int x, int y) {
         this.x = x;
         this.y = y;

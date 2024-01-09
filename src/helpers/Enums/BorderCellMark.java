@@ -7,7 +7,7 @@ public enum BorderCellMark {
 
     public final String mark;
 
-    private BorderCellMark(String mark) {
+    BorderCellMark(String mark) {
         this.mark = mark;
     }
     private static String coloredStringBackground(String x, int colorId) {
