@@ -1,10 +1,11 @@
+import helpers.ConstantStrings;
+import helpers.Enums.BorderCellMark;
 import helpers.Enums.Directions;
 import helpers.Enums.PlayerNumber;
 import helpers.ErrorMessage;
 import helpers.Print;
 import models.BoardCell;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Board {
     public int xSize;
@@ -21,51 +22,76 @@ public class Board {
     }
 
     public void setExampleBoard() {
-        for (int x = 0; x < xSize; x++) {
+        for (int x = 0; x < 10; x++) {
             System.out.print("            ");
-            for (int y = 0; y < ySize; y++) {
+            for (int y = 0; y < 6; y++) {
                 System.out.print(exampleBoard[x][y] + " ");
             }
             System.out.println();
         }
-        Print.ln("-------------------------------------------------------");
+        Print.ln(ConstantStrings.dividerLine);
     }
 
     public void gameBoard() {
+        System.out.print("                    ");
         for (int x = 0; x < xSize; x++) {
-            System.out.print("            ");
+            System.out.print(" " + "Y" + " ");
+        }
+        System.out.println();
+        System.out.print("                    ");
+        for (int x = 0; x < xSize; x++) {
+            System.out.print(" " + x + " ");
+        }
+        System.out.println();
+        System.out.print("                    ");
+        for (int x = 0; x < xSize; x++) {
+            System.out.print(" " + "_" + " " );
+        }
+        System.out.println();
+        for (int x = 0; x < xSize; x++) {
+            System.out.print("            X - " + x + " | ");
             for (int y = 0; y < ySize; y++) {
-                System.out.print(gameBoard[x][y] + "  ");
+                System.out.print(replaceMark(gameBoard[x][y]));
             }
             System.out.println();
         }
     }
 
-    public void setupStepOnBoard(Player player, int x, int y) {
+    private String replaceMark(int gameBoardCell) {
+        return switch (gameBoardCell) {
+            case 0 -> BorderCellMark.Empty.mark;
+            case 1 -> BorderCellMark.PlayerOne.mark;
+            case 2 -> BorderCellMark.PlayerTwo.mark;
+            default -> "";
+        };
+    }
+
+    public void setupStepOnBoard(Player player, BoardCell cell) {
         System.out.println();
-        insertStepToBoard(x,y,player);
+        insertStepToBoard(cell, player);
         gameBoard();
 
     }
-    public boolean checkIfIsWinStepFor(Player player, int x, int y) {
-        boolean isWin = (checkDirectionForWin(player, x, y, Directions.HORIZONTAL) ||
-                checkDirectionForWin(player, x, y, Directions.VERTICAL) ||
-                checkDirectionForWin(player, x, y, Directions.DiagonalTRtoBL) ||
-                checkDirectionForWin(player, x, y, Directions.DiagonalTLtoBR));
+    public boolean checkIfIsWinStepFor(Player player, BoardCell cell) {
+        boolean isWin = (checkDirectionForWin(player, cell, Directions.HORIZONTAL) ||
+                checkDirectionForWin(player, cell, Directions.VERTICAL) ||
+                checkDirectionForWin(player, cell, Directions.DiagonalTRtoBL) ||
+                checkDirectionForWin(player, cell, Directions.DiagonalTLtoBR));
         if (isWin) {
-            System.out.println("Congrats! " + player.playerName + ", you are a WINNER!!!");
+            System.out.println(ConstantStrings.congrats + player.playerName + ConstantStrings.youAreWinner);
             return true;
         }
         return false;
     }
 
-    public boolean checkDirectionForWin(Player player, int x, int y, Directions direction) {
+    public boolean checkDirectionForWin(Player player, BoardCell cell, Directions direction) {
         int countWinCell = 0;
         for (int i = -4; i <= 4; i++) {
-            int new_row = x + i * direction.getDirectionX();
-            int new_column = y + i * direction.getDirectionY();
+            int new_row = cell.X + i * direction.getDirectionX();
+            int new_column = cell.Y + i * direction.getDirectionY();
 
-            if (isValidCell(new_row, new_column) && gameBoard[new_row][new_column] == player.playerNumber.value) {
+            BoardCell new_cell = new BoardCell(new_row, new_column);
+            if (isValidCell(new_cell) && gameBoard[new_row][new_column] == player.playerNumber.value) {
                 countWinCell++;
                 if (countWinCell == 5) {
                     return true;
@@ -77,70 +103,14 @@ public class Board {
         return false;
     }
 
-    public boolean isValidCell(int x, int y) {
-        return (x >= 0 && x < xSize) && (y >= 0 && y < ySize);
+    public boolean isValidCell(BoardCell cell) {
+        return (cell.X >= 0 && cell.X < xSize) && (cell.Y >= 0 && cell.Y < ySize);
     }
-
-
-
-    public void checkDiagonals() {
-        int[] arr = new int[xSize];
-        for (int i = 0; i < gameBoard[0].length; i++) {
-            arr[i] = gameBoard[i][i];
-        }
-    }
-
-    public boolean checkingPossibleStepForRow(int row) {
-        if (gameBoard[row].length > 5 & isAcceptableCountOfEmptyCellsForRow(row)) {
-
-        }
-
-        return true;
-    }
-
-    //checking five cell in a row for are there 0 and 1 or 2. will check row if horizontal and column if vertical.
-    //checking possible steps.
-    private boolean isAreThereFiveCellsOfOneAndEmpty() {
-       return false;
-    }
-
-    private boolean isAcceptableCountOfEmptyCellsForRow(int row) {
-        return Arrays.stream(gameBoard[row])
-                .filter(x-> x == 0).toArray().length > 4;
-    }
-    private boolean isAcceptableCountOfEmptyCellsForRowInARow(int row, PlayerNumber playerNumber) {
-        return Arrays.stream(gameBoard[row])
-                .filter(x-> x == 0).toArray().length > 4;
-    }
-
-    private void checkingAreThereFiveValidCellsInARow(int y) {
-        for (int i = y - 4; i < 4 - 1; i++) {
-
-        }
-    }
-    private boolean checkingWinPosition(PlayerNumber playerNumber, int row) {
-        boolean isWin = false;
-        int countInARow = 0;
-        switch (countInARow) {
-            case 4:
-//                checkingStartAndTail();
-            case 3:
-
-            case 2:
-
-            default:
-
-        }
-        return isWin;
-    }
-
-
 
     // Private functions:
-    private void insertStepToBoard(int x, int y, Player player) {
-        if (gameBoard[x][y] == 0) {
-            gameBoard[x][y] = player.playerNumber.value;
-            BoardCell cell = new BoardCell(x,y);
+    private void insertStepToBoard(BoardCell cell, Player player) {
+        if (gameBoard[cell.X][cell.Y] == 0) {
+            gameBoard[cell.X][cell.Y] = player.playerNumber.value;
             if (player.playerNumber == PlayerNumber.One) {
                 playerOneSteps.add(cell);
             } else {

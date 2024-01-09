@@ -1,9 +1,5 @@
 import helpers.Constants;
 import helpers.Enums.PlayerNumber;
-import helpers.Print;
-
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     static Board board = new Board(Constants.boardX,Constants.boardY);
     static GameAssistant gameAssistant = new GameAssistant(board);
@@ -16,7 +12,6 @@ public class Main {
         gameAssistant.setExampleBoard();               // show default board
         gameAssistant.setupNameFor(player1);
         gameAssistant.setupNameFor(player2);
-
         gameAssistant.startGame(player1);
         gameAssistant.checkStepsTurnPlayers(player1, player2);
 

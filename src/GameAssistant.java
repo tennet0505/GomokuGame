@@ -1,7 +1,7 @@
-import helpers.Constants;
-import helpers.Enums.Directions;
+import helpers.ConstantStrings;
 import helpers.Enums.PlayerNumber;
 import helpers.ErrorMessage;
+import models.BoardCell;
 
 import java.util.Scanner;
 
@@ -15,9 +15,9 @@ public class GameAssistant {
         board = boardMain;
     }
     public void setGameTitle() {
-        System.out.println("-------------------------------------------------------");
-        System.out.println("                     Start game!");
-        System.out.println("-------------------------------------------------------");
+        System.out.println(ConstantStrings.dividerLine);
+        System.out.println(ConstantStrings.startGameTitle);
+        System.out.println(ConstantStrings.dividerLine);
     }
 
     public void setExampleBoard() {
@@ -25,17 +25,17 @@ public class GameAssistant {
     }
 
     public void setupNameFor(Player player) {
-        String playerNumber = player.playerNumber == PlayerNumber.One ? "Player 1" : "Player 2";
-        System.out.print(playerNumber + " enter your name: ");
+        String playerNumber = player.playerNumber == PlayerNumber.One ? ConstantStrings.playerOne : ConstantStrings.playerTwo;
+        System.out.print(playerNumber + ConstantStrings.enterName);
         String name = scanner.nextLine();
         player.playerName = name;
-        System.out.printf("Nice to meet you, %s!", name);
+        System.out.printf(ConstantStrings.niceToMeetYou, name);
         System.out.println();
     }
 
     public void startGame(Player player) {
         System.out.println();
-        System.out.printf("Let's start, %s. You are the first!", player.playerName);
+        System.out.printf(ConstantStrings.letsStart, player.playerName);
     }
 
     public void checkStepsTurnPlayers(Player player1, Player player2) {
@@ -54,13 +54,15 @@ public class GameAssistant {
     //Private functions:
     private void makeStep(Player player) {
         System.out.println();
-        System.out.print("\uD83E\uDD14 -=[ " + player.playerName +  " ]=-" + " choose X coordinate: ");
+        System.out.print("\uD83E\uDD14 -=[ " + player.playerName +  " ]=-" + ConstantStrings.chooseXCoordinate);
         int x = scanner.nextInt();
-        System.out.print("Choose Y coordinate: ");
+        System.out.print(ConstantStrings.chooseYCoordinate);
         int y = scanner.nextInt();
-        if (isValidLocation(x,y)) {
-            board.setupStepOnBoard(player, x, y);
-            isGameFinished = board.checkIfIsWinStepFor(player, x, y);
+
+        BoardCell cell = new BoardCell(x, y);
+        if (isValidLocation(cell)) {
+            board.setupStepOnBoard(player, cell);
+            isGameFinished = board.checkIfIsWinStepFor(player, cell);
         } else {
             System.out.print(ErrorMessage.errorWrongLocation);
             makeStep(player);
@@ -71,23 +73,23 @@ public class GameAssistant {
         if (!isGameFinished) {
             return true;
         } else {
-            System.out.println("=====GAME OVER=====");
+            System.out.println(ConstantStrings.gameOver);
             return false;
         }
     }
 
-    private Boolean isValidLocation(int x, int y) {
-        return (x >= 0 && x < board.xSize) && (y >= 0 && y < board.ySize)
-                && !isOutOfBounds(x,y)
-                && !isCellOccupied(x,y);
+    private Boolean isValidLocation(BoardCell cell) {
+        return (cell.X >= 0 && cell.X < board.xSize) && (cell.Y >= 0 && cell.Y < board.ySize)
+                && !isOutOfBounds(cell)
+                && !isCellOccupied(cell);
     }
 
-    private Boolean isCellOccupied(int x, int y) {
-        return board.gameBoard[x][y] != 0;
+    private Boolean isCellOccupied(BoardCell cell) {
+        return board.gameBoard[cell.X][cell.Y] != 0;
     }
-    private Boolean isOutOfBounds(int x, int y) {
+    private Boolean isOutOfBounds(BoardCell cell) {
         try {
-            return board.gameBoard[x][y] != 0;
+            return board.gameBoard[cell.X][cell.Y] != 0;
         } catch(Error e) {
             return true;
         }
