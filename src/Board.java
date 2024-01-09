@@ -4,6 +4,7 @@ import helpers.Enums.Directions;
 import helpers.Enums.PlayerNumber;
 import helpers.ErrorMessage;
 import helpers.Print;
+import helpers.StringHelper;
 import models.BoardCell;
 import java.util.ArrayList;
 
@@ -33,25 +34,25 @@ public class Board {
     }
 
     public void gameBoard() {
-        System.out.print("                    ");
-        for (int x = 0; x < xSize; x++) {
-            System.out.print(" " + "Y" + " ");
+        System.out.print("                     ");
+        for (int y = 0; y < xSize; y++) {
+            System.out.print(" " + StringHelper.extraSpace(xSize) + "Y" + " ");
         }
         System.out.println();
-        System.out.print("                    ");
-        for (int x = 0; x < xSize; x++) {
-            System.out.print(" " + x + " ");
+        System.out.print("                     ");
+        for (int y = 0; y < xSize; y++) {
+            System.out.print(" " + StringHelper.extraSpaceHorizontal(xSize, y) + y + " ");
         }
         System.out.println();
-        System.out.print("                    ");
-        for (int x = 0; x < xSize; x++) {
-            System.out.print(" " + "_" + " " );
+        System.out.print("                     ");
+        for (int y = 0; y < xSize; y++) {
+            System.out.print(" " + StringHelper.extraSpace(xSize) + "_" + " " );
         }
         System.out.println();
         for (int x = 0; x < xSize; x++) {
-            System.out.print("            X - " + x + " | ");
+            System.out.print("            X - " + StringHelper.extraSpaceVertical(x) + x + " | ");
             for (int y = 0; y < ySize; y++) {
-                System.out.print(replaceMark(gameBoard[x][y]));
+                System.out.print(StringHelper.extraSpace(xSize) + replaceMark(gameBoard[x][y]));
             }
             System.out.println();
         }

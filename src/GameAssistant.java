@@ -3,6 +3,7 @@ import helpers.Enums.PlayerNumber;
 import helpers.ErrorMessage;
 import models.BoardCell;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class GameAssistant {
@@ -22,6 +23,22 @@ public class GameAssistant {
 
     public void setExampleBoard() {
        board.setExampleBoard();
+    }
+
+    public void setBoardSize() {
+        System.out.println("Default size of board is 10X10");
+        System.out.println("You can set board's size. Do you wan set set board's size? Yes/No");
+        String isSetBoard = scanner.nextLine();
+        System.out.println();
+        if (Objects.equals(isSetBoard, "Yes")) {
+            System.out.print("Enter X size: ");
+            String xSize = scanner.nextLine();
+            System.out.print("Enter Y size: ");
+            String ySize = scanner.nextLine();
+            int newXSize = Integer.parseInt(xSize);
+            int newYSize = Integer.parseInt(ySize);
+            board = new Board(newXSize, newYSize);
+        }
     }
 
     public void setupNameFor(Player player) {

@@ -9,7 +9,8 @@ public class Main {
     public static void main(String[] args) {
 
         gameAssistant.setGameTitle();
-        gameAssistant.setExampleBoard();               // show default board
+        gameAssistant.setExampleBoard();
+        gameAssistant.setBoardSize();
         gameAssistant.setupNameFor(player1);
         gameAssistant.setupNameFor(player2);
         gameAssistant.startGame(player1);
