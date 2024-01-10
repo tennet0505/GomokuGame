@@ -13,7 +13,7 @@ public class ConstantStrings {
     public static String gameOver = "=====GAME OVER=====";
     public static String congrats = "Congrats! ";
     public static String youAreWinner = ", you are a WINNER!!!";
-    public static String defaultBordSize = "Default size of a board is 10X10";
+    public static String defaultBordSize = "Default size of a board is 15X15";
     public static String setBordSize = "You can set a board's size. Do you want to set a board's size? Yes/No:";
     public static String yes = "Yes";
     public static String enterXsize = "Enter Board X size: ";

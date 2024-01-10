@@ -1,12 +1,9 @@
-import helpers.ConstantStrings;
+import helpers.*;
 import helpers.Enums.BorderCellMark;
-import helpers.Enums.Directions;
 import helpers.Enums.PlayerType;
-import helpers.ErrorMessage;
-import helpers.Print;
-import helpers.StringHelper;
 import models.BoardCell;
-import java.util.ArrayList;
+
+import java.util.*;
 
 public class Board {
     public int xSize;
@@ -62,8 +59,7 @@ public class Board {
         return switch (gameBoardCell) {
             case 0 -> BorderCellMark.Empty.mark;
             case 1 -> BorderCellMark.PlayerOne.mark;
-            case 2 -> BorderCellMark.PlayerTwo.mark;
-            case 3 -> BorderCellMark.PlayerTwo.mark;
+            case 2, 3 -> BorderCellMark.PlayerTwo.mark;
             default -> "";
         };
     }
@@ -72,41 +68,6 @@ public class Board {
         System.out.println();
         insertStepToBoard(cell, player);
         gameBoard();
-
-    }
-    public boolean checkIfIsWinStepFor(Player player, BoardCell cell) {
-        boolean isWin = (checkDirectionForWin(player, cell, Directions.HORIZONTAL) ||
-                checkDirectionForWin(player, cell, Directions.VERTICAL) ||
-                checkDirectionForWin(player, cell, Directions.DiagonalTRtoBL) ||
-                checkDirectionForWin(player, cell, Directions.DiagonalTLtoBR));
-        if (isWin) {
-            System.out.println(ConstantStrings.congrats + player.playerName + ConstantStrings.youAreWinner);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean checkDirectionForWin(Player player, BoardCell cell, Directions direction) {
-        int countWinCell = 0;
-        for (int i = -4; i <= 4; i++) {
-            int new_row = cell.X + i * direction.getDirectionX();
-            int new_column = cell.Y + i * direction.getDirectionY();
-
-            BoardCell new_cell = new BoardCell(new_row, new_column);
-            if (isValidCell(new_cell) && gameBoard[new_row][new_column] == player.playerType.value) {
-                countWinCell++;
-                if (countWinCell == 5) {
-                    return true;
-                }
-            } else {
-                countWinCell = 0;
-            }
-        }
-        return false;
-    }
-
-    public boolean isValidCell(BoardCell cell) {
-        return (cell.X >= 0 && cell.X < xSize) && (cell.Y >= 0 && cell.Y < ySize);
     }
 
     // Private functions:
@@ -142,22 +103,3 @@ public class Board {
         return arrayUpdated;
     }
 }
-
-
-
-
-// check boards's edges
-// if x > 0 and x < sizeX return true
-// if y > 0 and x < sizeY return true
-
-// check dead locks
-// if neighbourCell isEmpty return false
-
-// check win pattern
-// if there are 4 ident cells return true
-
-// check guard pattern
-// if there are 3 ident cells and there are empty cells from tail and nose return true
-
-// check attack pattern
-// if there are 3 opponent's cells and there are empty cells from tail and nose return true

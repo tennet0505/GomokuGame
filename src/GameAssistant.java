@@ -14,9 +14,11 @@ public class GameAssistant {
     Boolean isFirstPlayerTurn = true;
     Boolean isGameFinished = false;
     GameType gameType = GameType.HumanVsHuman;
+    GameLogic gameLogic;
 
     public GameAssistant(Board boardMain) {
         board = boardMain;
+        gameLogic = new GameLogic(boardMain);
     }
     public void setGameTitle() {
         System.out.println(ConstantStrings.dividerLine);
@@ -100,18 +102,23 @@ public class GameAssistant {
                 cell.Y = y;
                 break;
             case PlayerType.AI:
-                Random rand = new Random();
-                int randX = rand.nextInt(board.xSize);
-                int randY = rand.nextInt(board.ySize);
-                BoardCell randomCell = new BoardCell(randX, randY);
-                System.out.print("\uD83E\uDDBE-=(*_~)=-_/ I choose: " + "X: " + randomCell.X + ", " + "Y: " + randomCell.Y);
-                cell.X = randomCell.X;
-                cell.Y = randomCell.Y;
+                if (gameLogic.checkAndGetCellForPreWinPosition() != null) {
+                    cell = gameLogic.checkAndGetCellForPreWinPosition();
+                    System.out.print("\uD83E\uDDBE-=(*_~)=-_/ I choose: " + "X: " + cell.X + ", " + "Y: " + cell.Y);
+                } else {
+                    Random rand = new Random();
+                    int randX = rand.nextInt(board.xSize);
+                    int randY = rand.nextInt(board.ySize);
+                    BoardCell randomCell = new BoardCell(randX, randY);
+                    System.out.print("\uD83E\uDDBE-=(*_~)=-_/ I choose: " + "X: " + randomCell.X + ", " + "Y: " + randomCell.Y);
+                    cell.X = randomCell.X;
+                    cell.Y = randomCell.Y;
+                }
                 break;
         }
         if (isValidLocation(cell)) {
             board.setupStepOnBoard(player, cell);
-            isGameFinished = board.checkIfIsWinStepFor(player, cell);
+            isGameFinished = gameLogic.checkIfIsWinStepFor(player, cell);
         } else {
             System.out.print(ErrorMessage.errorWrongLocation);
             makeStep(player);
