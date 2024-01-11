@@ -23,4 +23,5 @@ public class ConstantStrings {
     public static String gameTypeHumanVsDumbAI = "- Human VS DumbAI: 2";
     public static String gameHumanVsHuman = "Good. Game  \uD83D\uDE4E VS \uD83D\uDE4E";
     public static String gameHumanVsDumbAI = "Good. Game \uD83D\uDE4E VS \uD83E\uDDBE!";
+    public static String aiTurn = "¯\\_\uD83E\uDDD0_/¯ I choose: ";
 }

@@ -102,23 +102,14 @@ public class GameAssistant {
                 cell.Y = y;
                 break;
             case PlayerType.AI:
-                if (gameLogic.checkAndGetCellForPreWinPosition() != null) {
-                    cell = gameLogic.checkAndGetCellForPreWinPosition();
-                    System.out.print("\uD83E\uDDBE-=(*_~)=-_/ I choose: " + "X: " + cell.X + ", " + "Y: " + cell.Y);
-                } else {
-                    Random rand = new Random();
-                    int randX = rand.nextInt(board.xSize);
-                    int randY = rand.nextInt(board.ySize);
-                    BoardCell randomCell = new BoardCell(randX, randY);
-                    System.out.print("\uD83E\uDDBE-=(*_~)=-_/ I choose: " + "X: " + randomCell.X + ", " + "Y: " + randomCell.Y);
-                    cell.X = randomCell.X;
-                    cell.Y = randomCell.Y;
-                }
+                cell = (gameLogic.checkAndGetCellForGuardPosition() != null) ?
+                        gameLogic.checkAndGetCellForGuardPosition() : gameLogic.getRandomCell();
+                System.out.print(ConstantStrings.aiTurn + "X: " + cell.X + ", " + "Y: " + cell.Y);
                 break;
         }
-        if (isValidLocation(cell)) {
+        if (gameLogic.isCellOccupiedOrOutOfBounds(cell)) {
             board.setupStepOnBoard(player, cell);
-            isGameFinished = gameLogic.checkIfIsWinStepFor(player, cell);
+            isGameFinished = gameLogic.checkIfIsGameFinished(player, cell);
         } else {
             System.out.print(ErrorMessage.errorWrongLocation);
             makeStep(player);
@@ -131,23 +122,6 @@ public class GameAssistant {
         } else {
             System.out.println(ConstantStrings.gameOver);
             return false;
-        }
-    }
-
-    private Boolean isValidLocation(BoardCell cell) {
-        return (cell.X >= 0 && cell.X < board.xSize) && (cell.Y >= 0 && cell.Y < board.ySize)
-                && !isOutOfBounds(cell)
-                && !isCellOccupied(cell);
-    }
-
-    private Boolean isCellOccupied(BoardCell cell) {
-        return board.gameBoard[cell.X][cell.Y] != 0;
-    }
-    private Boolean isOutOfBounds(BoardCell cell) {
-        try {
-            return board.gameBoard[cell.X][cell.Y] != 0;
-        } catch(Error e) {
-            return true;
         }
     }
 }
