@@ -69,21 +69,12 @@ public class GameLogic {
         BoardCell newCell = new BoardCell(-4, -4);
         board.playerOneSteps.sort(new ArraySort());
         for (BoardCell playerOneStep : board.playerOneSteps) {
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println("direction: " + direction);
-            System.out.println("playerOneStep X: " + playerOneStep.X);
-            System.out.println("playerOneStep Y: " + playerOneStep.Y);
-            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
             for (int i = 0; i <= 4; i++) {
                 newCell.X = playerOneStep.X + i * direction.getDirectionX();
                 newCell.Y = playerOneStep.Y + i * direction.getDirectionY();
                 if (!isValidCell(newCell)) {
                     break;
                 }
-                    System.out.println("i: " + i);
-                    System.out.println("isValidCell(newCell) X: " + newCell.X);
-                    System.out.println("isValidCell(newCell) Y: " + newCell.Y);
-                    System.out.println("board.getValueForCell(newCell): " + board.getValueForCell(newCell));
                     switch (board.getValueForCell(newCell)) {
                         case 1:
                             countCellsInARow++;
@@ -91,39 +82,18 @@ public class GameLogic {
                         case 0:
                             countCellBetweenOnes ++;
                             centerCell = new BoardCell(newCell.X, newCell.Y);
-                            System.out.println("centerCell X: " + centerCell.X);
-                            System.out.println("centerCell Y: " + centerCell.Y);
                         default: break;
-                    }
-                    System.out.println("countCellsInARow++ : " + countCellsInARow);
-                    System.out.println("countCellBetweenOnes++ : " + countCellBetweenOnes);
-
-                    if (countCellBetweenOnes == 1) {
-                        System.out.println("********************>>>>>>>");
-                        System.out.println("called => if (countCellBetweenOnes == 1)");
-                        System.out.println("<<<<<<<********************");
                     }
                     if (countCellsInARow == 2) {
                         if (isSecondAndThirdCheckedCellIsEmpty(newCell, direction)){
-                            System.out.println("********************>>>>>>>");
-                            System.out.println("called => if (isSecondAndThirdCheckedCellIsEmty(newCell, direction)) break is called");
-                            System.out.println("<<<<<<<********************");
                             break;
                         }
                     }
                     if (countCellsInARow == 3 && countCellBetweenOnes == 1) {
-                        System.out.println("********************>>>>>>>");
-                        System.out.println("called => if (countCellsInARow == 3 && countCellBetweenOnes == 1)");
-                        System.out.println("centerCell X: " + centerCell.X);
-                        System.out.println("centerCell Y: " + centerCell.Y);
-                        System.out.println("<<<<<<<********************");
                         return centerCell;
                     }
                     if (countCellsInARow == 3) {
                         nextMoveCell = getCellCheckedHeadAndTail(newCell, direction);
-                        System.out.println("********************>>>>>>>");
-                        System.out.println("called => if (countCellsInARow == 3)");
-                        System.out.println("<<<<<<<********************");
                         return nextMoveCell;
                     }
             }
