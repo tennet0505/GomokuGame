@@ -70,6 +70,10 @@ public class Board {
         gameBoard();
     }
 
+    public int getValueForCell(BoardCell cell) {
+        return gameBoard[cell.X][cell.Y];
+    }
+
     // Private functions:
     private void insertStepToBoard(BoardCell cell, Player player) {
         if (gameBoard[cell.X][cell.Y] == 0) {

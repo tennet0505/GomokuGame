@@ -1,10 +1,10 @@
 package helpers.Enums;
 
 public enum Directions {
-    VERTICAL(0, 1),         //vertical
-    HORIZONTAL(1, 0),       //horizontal
+    VERTICAL(1, 0),         //vertical
+    HORIZONTAL(0, 1),       //horizontal
     DiagonalTLtoBR(1, 1),   //diagonal \
-    DiagonalTRtoBL(-1, -1); //diagonal /
+    DiagonalTRtoBL(-1, 1); //diagonal /
 
     private final int x;
     private final int y;

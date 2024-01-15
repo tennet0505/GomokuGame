@@ -46,61 +46,91 @@ public class GameLogic {
     }
 
     public BoardCell checkAndGetCellForGuardPosition() {
-        if (checkDirectionForGuardPosition(Directions.HORIZONTAL) != null) {
-            return checkDirectionForGuardPosition(Directions.HORIZONTAL);
+        if (getCellCheckDirectionForGuardPosition(Directions.HORIZONTAL) != null) {
+            return getCellCheckDirectionForGuardPosition(Directions.HORIZONTAL);
         }
-        if (checkDirectionForGuardPosition(Directions.VERTICAL) != null) {
-            return checkDirectionForGuardPosition(Directions.VERTICAL);
+        if (getCellCheckDirectionForGuardPosition(Directions.VERTICAL) != null) {
+            return getCellCheckDirectionForGuardPosition(Directions.VERTICAL);
         }
-        if (checkDirectionForGuardPosition(Directions.DiagonalTLtoBR) != null) {
-            return checkDirectionForGuardPosition(Directions.DiagonalTLtoBR);
+        if (getCellCheckDirectionForGuardPosition(Directions.DiagonalTLtoBR) != null) {
+            return getCellCheckDirectionForGuardPosition(Directions.DiagonalTLtoBR);
         }
-        if (checkDirectionForGuardPosition(Directions.DiagonalTRtoBL) != null) {
-            return checkDirectionForGuardPosition(Directions.DiagonalTRtoBL);
+        if (getCellCheckDirectionForGuardPosition(Directions.DiagonalTRtoBL) != null) {
+            return getCellCheckDirectionForGuardPosition(Directions.DiagonalTRtoBL);
         }
         return null;
     }
 
-    //check for preWin position when there are three "1"  in a row
-    public BoardCell checkDirectionForGuardPosition(Directions direction) {
-        int countWinCell = 0;
-        BoardCell forwardTailCell = null;
+    public BoardCell getCellCheckDirectionForGuardPosition(Directions direction) {
+        int countCellsInARow = 0;
+        int countCellBetweenOnes = 0;
+        BoardCell nextMoveCell = null;
+        BoardCell centerCell = null;
+        BoardCell newCell = new BoardCell(-4, -4);
         board.playerOneSteps.sort(new ArraySort());
         for (BoardCell playerOneStep : board.playerOneSteps) {
-            System.out.println("playerOneStep: " + playerOneStep.X + ", " + playerOneStep.Y);
-            for (int i = -4; i <= 4; i++) {
-                int newRow = playerOneStep.X + i * direction.getDirectionX();
-                int newColumn = playerOneStep.Y + i * direction.getDirectionY();
-                BoardCell newCell = new BoardCell(newRow, newColumn);
-                if (isValidCell(newCell) && board.gameBoard[newCell.X][newCell.Y] == PlayerType.HumanOne.value) {
-                    countWinCell++;
-
-                    if (countWinCell == 5) {
-
-//                        forwardTailCell = (getForwardCell(newCell, direction) != null) ? getForwardCell(newCell, direction)
-//                                : ((getTailCell(newCell, direction) != null) ? getTailCell(newCell, direction)
-//                                : null);
-                    }
-                    //make checking condition for 4 cells in a row
-                    if (countWinCell == 4) {
-                        forwardTailCell = (getForwardCell(newCell, direction) != null) ? getForwardCell(newCell, direction)
-                                : ((getTailCell(newCell, direction) != null) ? getTailCell(newCell, direction)
-                                : null);
-                    }
-                    //make checking condition for 5 cells with one empty cell inside
-                    if (countWinCell == 3) {
-                        forwardTailCell = (getForwardCell(newCell, direction) != null) ? getForwardCell(newCell, direction)
-                                : ((getTailCell(newCell, direction) != null) ? getTailCell(newCell, direction)
-                                : null);
-                    }
-
-                } else {
-                    countWinCell = 0;
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            System.out.println("direction: " + direction);
+            System.out.println("playerOneStep X: " + playerOneStep.X);
+            System.out.println("playerOneStep Y: " + playerOneStep.Y);
+            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            for (int i = 0; i <= 4; i++) {
+                newCell.X = playerOneStep.X + i * direction.getDirectionX();
+                newCell.Y = playerOneStep.Y + i * direction.getDirectionY();
+                if (!isValidCell(newCell)) {
+                    break;
                 }
+                    System.out.println("i: " + i);
+                    System.out.println("isValidCell(newCell) X: " + newCell.X);
+                    System.out.println("isValidCell(newCell) Y: " + newCell.Y);
+                    System.out.println("board.getValueForCell(newCell): " + board.getValueForCell(newCell));
+                    switch (board.getValueForCell(newCell)) {
+                        case 1:
+                            countCellsInARow++;
+                            break;
+                        case 0:
+                            countCellBetweenOnes ++;
+                            centerCell = new BoardCell(newCell.X, newCell.Y);
+                            System.out.println("centerCell X: " + centerCell.X);
+                            System.out.println("centerCell Y: " + centerCell.Y);
+                        default: break;
+                    }
+                    System.out.println("countCellsInARow++ : " + countCellsInARow);
+                    System.out.println("countCellBetweenOnes++ : " + countCellBetweenOnes);
+
+                    if (countCellBetweenOnes == 1) {
+                        System.out.println("********************>>>>>>>");
+                        System.out.println("called => if (countCellBetweenOnes == 1)");
+                        System.out.println("<<<<<<<********************");
+                    }
+                    if (countCellsInARow == 2) {
+                        if (isSecondAndThirdCheckedCellIsEmpty(newCell, direction)){
+                            System.out.println("********************>>>>>>>");
+                            System.out.println("called => if (isSecondAndThirdCheckedCellIsEmty(newCell, direction)) break is called");
+                            System.out.println("<<<<<<<********************");
+                            break;
+                        }
+                    }
+                    if (countCellsInARow == 3 && countCellBetweenOnes == 1) {
+                        System.out.println("********************>>>>>>>");
+                        System.out.println("called => if (countCellsInARow == 3 && countCellBetweenOnes == 1)");
+                        System.out.println("centerCell X: " + centerCell.X);
+                        System.out.println("centerCell Y: " + centerCell.Y);
+                        System.out.println("<<<<<<<********************");
+                        return centerCell;
+                    }
+                    if (countCellsInARow == 3) {
+                        nextMoveCell = getCellCheckedHeadAndTail(newCell, direction);
+                        System.out.println("********************>>>>>>>");
+                        System.out.println("called => if (countCellsInARow == 3)");
+                        System.out.println("<<<<<<<********************");
+                        return nextMoveCell;
+                    }
             }
-            return forwardTailCell;
+            countCellBetweenOnes = 0;
+            countCellsInARow = 0;
         }
-        return forwardTailCell;
+        return nextMoveCell;
     }
 
     public BoardCell getRandomCell() {
@@ -111,21 +141,41 @@ public class GameLogic {
         return new BoardCell(randomCell.X, randomCell.Y);
     }
 
-    private BoardCell getTailCell(BoardCell cell, Directions direction) {
-        int tailRow = cell.X + direction.getDirectionX();
-        int tailColumn = cell.Y + direction.getDirectionY();
-        BoardCell new_last_cell = new BoardCell(tailRow, tailColumn);
-        if (isValidCell(new_last_cell) && board.gameBoard[tailRow][tailColumn] == 0) {
+    private boolean isSecondAndThirdCheckedCellIsEmpty(BoardCell cell, Directions direction) {
+        int secondRow = cell.X + direction.getDirectionX();
+        int secondColumn = cell.Y + direction.getDirectionY();
+        BoardCell secondCheckedCell = new BoardCell(secondRow, secondColumn);
+        int thirdRow = cell.X + direction.getDirectionX() * 2;
+        int thirdColumn = cell.Y + direction.getDirectionY() * 2;
+        BoardCell thirdCheckedCell = new BoardCell(thirdRow, thirdColumn);
+        return isValidCell(secondCheckedCell) && board.getValueForCell(secondCheckedCell) == 0
+                && isValidCell(thirdCheckedCell) && board.getValueForCell(thirdCheckedCell) == 0;
+    }
+    private BoardCell getCellCheckedHeadAndTail(BoardCell cell, Directions direction) {
+        if (headCellIsEmpty(cell, direction) && (tailCellIsEmpty(cell, direction))) {
+            int tailRow = cell.X + direction.getDirectionX();
+            int tailColumn = cell.Y + direction.getDirectionY();
             return new BoardCell(tailRow, tailColumn);
         }
         return null;
     }
-    private BoardCell getForwardCell(BoardCell cell, Directions direction) {
-        int tailRow = cell.X - 3 * direction.getDirectionX();
-        int tailColumn = cell.Y - 3 * direction.getDirectionY();
-        BoardCell new_last_cell = new BoardCell(tailRow, tailColumn);
-        if (isValidCell(new_last_cell) && board.gameBoard[tailRow][tailColumn] == 0) {
-            return new BoardCell(tailRow, tailColumn);
+    private boolean tailCellIsEmpty(BoardCell cell, Directions direction) {
+        int tailRow = cell.X + direction.getDirectionX();
+        int tailColumn = cell.Y + direction.getDirectionY();
+        BoardCell newLastCell = new BoardCell(tailRow, tailColumn);
+        return isValidCell(newLastCell) && board.getValueForCell(newLastCell) == 0;
+    }
+    private boolean headCellIsEmpty(BoardCell cell, Directions direction) {
+        int headRow = cell.X - 3 * direction.getDirectionX();
+        int headColumn = cell.Y - 3 * direction.getDirectionY();
+        BoardCell newLastCell = new BoardCell(headRow, headColumn);
+        return isValidCell(newLastCell) && board.getValueForCell(newLastCell) == 0;
+    }
+
+    private BoardCell getCenterCell(BoardCell cell, Directions direction) {
+        BoardCell newCell = new BoardCell(cell.X, cell.Y);
+        if (board.getValueForCell(newCell) == 0) {
+            return newCell;
         }
         return null;
     }
